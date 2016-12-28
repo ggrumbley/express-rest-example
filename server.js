@@ -10,9 +10,9 @@ const app = express();
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 
-let db;
+var db;
 
-const MONGODB_URI = 'mongodb://localhost/contacts-dev';
+var MONGODB_URI = 'mongodb://localhost/contacts-dev';
 if (process.env.NODE_ENV === 'production') {
   MONGODB_URI = process.env.MONGODB_URI;
 }
