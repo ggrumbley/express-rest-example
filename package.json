@@ -1,0 +1,14 @@
+{
+  "name": "REST-Example",
+  "version": "1.0.0",
+  "description": "This is an example REST API built with Express.js.",
+  "main": "server.js",
+  "repository": "git@github.com:ggrumbley/express-rest-example.git",
+  "author": "gary <ggrumbley@ucsd.edu>",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "mongodb": "^2.2.16"
+  }
+}
