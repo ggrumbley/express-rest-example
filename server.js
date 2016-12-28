@@ -41,7 +41,13 @@ function handleError(res, reason, message, code) {
 }
 
 app.get('/contacts', (req, res) => {
-
+  db.collection(CONTACTS_COLLECTION).find({}).toArray((err, docs) => {
+    if (err) {
+      handleError(res, err.message, 'Failed to get contacts.');
+    } else {
+      res.status(200).json(docs);
+    }
+  });
 });
 
 app.post('/contacts', (req, res) => {
@@ -62,7 +68,13 @@ app.post('/contacts', (req, res) => {
 });
 
 app.get('/contacts/:id', (req, res) => {
-
+  db.collection(CONTACTS_COLLECTION).findOne({ _id: new ObjectID(req.params.id) }, (err, doc) => {
+    if (err) {
+      handleError(res, err.message, 'Failed to get contact');
+    } else {
+      res.status(200).json(doc);
+    }
+  });
 });
 
 app.put('/contacts/:id', (req, res) => {
