@@ -6,6 +6,10 @@
   "repository": "git@github.com:ggrumbley/express-rest-example.git",
   "author": "gary <ggrumbley@ucsd.edu>",
   "license": "MIT",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
   "dependencies": {
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
