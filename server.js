@@ -10,9 +10,9 @@ const app = express();
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 
-var db;
+let db;
 
-var MONGODB_URI = 'mongodb://localhost/contacts-dev';
+let MONGODB_URI = 'mongodb://localhost/contacts-dev';
 if (process.env.NODE_ENV === 'production') {
   MONGODB_URI = process.env.MONGODB_URI;
 }
@@ -43,7 +43,7 @@ function handleError(res, reason, message, code) {
 app.get('/contacts', (req, res) => {
   db.collection(CONTACTS_COLLECTION).find({}).toArray((err, docs) => {
     if (err) {
-      handleError(res, err.message, 'Failed to get contacts.');
+      handleError(res, err.message, 'Failed to get contacts');
     } else {
       res.status(200).json(docs);
     }
@@ -55,12 +55,12 @@ app.post('/contacts', (req, res) => {
   newContact.createDate = new Date();
 
   if (!(req.body.firstName || req.body.lastName)) {
-    handleError(res, "Invalid user input", "Must provide a first or last name.", 400);
+    handleError(res, "Invalid user input", 'Must provide a first or last name', 400);
   }
 
   db.collection(CONTACTS_COLLECTION).insertOne(newContact, (err, doc) => {
     if (err) {
-      handleError(res, err.message, 'Failed to create new contact.');
+      handleError(res, err.message, 'Failed to create new contact');
     } else {
       res.status(201).json(doc.ops[0]);
     }
@@ -78,9 +78,24 @@ app.get('/contacts/:id', (req, res) => {
 });
 
 app.put('/contacts/:id', (req, res) => {
+  let updateDoc = req.body;
+  delete updateDoc._id;
 
+  db.collection(CONTACTS_COLLECTION).updateOne({_id: new ObjectID(req.params.id)}, updateDoc, (err, doc) => {
+    if (err) {
+      handleError(res, err.message, 'Failed to update contact');
+    } else {
+      res.status(204).end();
+    }
+  });
 });
 
 app.delete('/contacts/:id', (req, res) => {
-
+  db.collection(CONTACTS_COLLECTION).deleteOne({_id: new ObjectID(req.params.id)}, (err, result) => {
+    if (err) {
+      handleError(res, err.message, 'Failed to delete contact');
+    } else {
+      res.status(204).end();
+    }
+  });
 });
